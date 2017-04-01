@@ -28,8 +28,20 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-devtools")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    compileOnly "org.projectlombok:lombok:1.16.16"
+
+
+    // https://mvnrepository.com/artifact/net.sf.dozer/dozer
+    compile group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
+    // https://mvnrepository.com/artifact/com.googlecode.jmapper-framework/jmapper-core
+//    compile group: 'com.googlecode.jmapper-framework', name: 'jmapper-core', version: '1.6.0.1'
+
 }
+
+
 
 springBoot {
     executable = true

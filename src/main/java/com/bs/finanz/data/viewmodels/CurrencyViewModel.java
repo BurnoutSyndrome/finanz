@@ -1,6 +1,9 @@
-package com.bs.finanz.models;
+package com.bs.finanz.data.viewmodels;
 
-public class CurrencyItem {
+import lombok.Data;
+
+@Data
+public class CurrencyViewModel {
     public double selling;
     public int updateDate;
     public int currency;
