@@ -10,12 +10,11 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-
-//import com.googlecode.jmapper.JMapper;
 
 @RestController
 @RequestMapping("/StockMarket")
@@ -29,40 +28,35 @@ public class StockMarket {
     @Value("${url.stockmarket.xu100}")
     private String stockMarketXU100Url;
 
-    @Autowired
-    DozerBeanMapper mapper;
+    private final DozerBeanMapper mapper;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @RequestMapping
+    @Autowired
+    public StockMarket(DozerBeanMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
     public StockMarketViewModel[] home() {
-//        JMapper<StockMarketViewModel, StockMarketItem> mapper = new JMapper<>(StockMarketViewModel.class, StockMarketItem.class);
         StockMarketItem[] items = restTemplate.getForObject(stockMarketUrl, StockMarketItem[].class);
 
-        StockMarketViewModel[] viewModels = Arrays.stream(items).map(item -> mapper.map(item, StockMarketViewModel.class))
+        return Arrays.stream(items).map(item -> mapper.map(item, StockMarketViewModel.class))
                 .toArray(StockMarketViewModel[]::new);
-
-        return viewModels;
     }
 
-    @RequestMapping("/Detail")
+    @RequestMapping(value = "/Detail", method = RequestMethod.GET)
     public StockMarketDetailViewModel[] detail() {
-//        JMapper<StockMarketDetailViewModel, StockMarketDetailItem> mapper = new JMapper<>(StockMarketDetailViewModel.class, StockMarketDetailItem.class);
         StockMarketDetailItem[] items = restTemplate.getForObject(stockMarketDetailUrl, StockMarketDetailItem[].class);
 
-        StockMarketDetailViewModel[] viewModels = Arrays.stream(items).map(item -> mapper.map(item, StockMarketDetailViewModel.class))
+        return Arrays.stream(items).map(item -> mapper.map(item, StockMarketDetailViewModel.class))
                 .toArray(StockMarketDetailViewModel[]::new);
-
-        return viewModels;
     }
 
-    @RequestMapping("/XU100")
+    @RequestMapping(value = "/XU100", method = RequestMethod.GET)
     public StockMarketXU100ViewModel xu100() {
-//        JMapper<StockMarketXU100ViewModel, StockMarketXU100Item> mapper = new JMapper<>(StockMarketXU100ViewModel.class, StockMarketXU100Item.class);
         StockMarketXU100Item item = restTemplate.getForObject(stockMarketXU100Url, StockMarketXU100Item.class);
 
-        StockMarketXU100ViewModel viewModel = mapper.map(item, StockMarketXU100ViewModel.class);
-
-        return viewModel;
+        return mapper.map(item, StockMarketXU100ViewModel.class);
     }
 }
