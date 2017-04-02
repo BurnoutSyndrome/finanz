@@ -11,6 +11,6 @@ public class Index {
 
     @RequestMapping("/")
     public String home() {
-        return String.format("forward:/%s", swaggerUrl);
+        return String.format("redirect:/%s", swaggerUrl);
     }
 }
